@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -16,11 +17,10 @@ int tamanho = sizeof(cliente);
 int main (int argc, char *argv[]){
 		
 	int PORTA = atoi(argv[1]); // porta da conexão
-	int LENGHT = atoi (argv[2]); // tamanho do buffer 
+	int LENGHT = atoi(argv[2]); // tamanho do buffer 
 	//printf("%d\n%d\n",PORTA,LENGHT);
-	int retorno;
 	char buffer [LENGHT];
-	char aux [LENGHT];
+	void *aux = malloc(LENGHT*sizeof(char));
 	int socket_des; // descritor do socket
 	socket_des = socket (AF_INET, SOCK_STREAM, 0);
 	if (socket_des == -1){	
@@ -49,20 +49,25 @@ int main (int argc, char *argv[]){
 	strcpy(buffer,"Conexão estabelecida\n\0");
 	int slen;
 
-	send(Client,buffer,strlen(buffer), 0);
-	printf("Aguardando resposta\n");
-	memset(buffer,0x0,LENGHT);		
-	while((slen = recv(Client, buffer, LENGHT, 0))<0);
-	printf("Nome do arquivo: %s",buffer);
-	printf("1");
-	FILE *fp;
-	fp = fopen(buffer,"r");
-	printf("2");
-	while(fread(&buffer,LENGHT,1,fp)>0){ 
-		send(Client,buffer,LENGHT, 0);
+	send(Client, buffer, strlen(buffer), 0);
+	printf("Aguardando resposta \n");
+	memset(buffer, 0x0, LENGHT);			
+	while((slen = recv(Client, buffer, LENGHT, 0)) < 0);
+	printf("Nome do arquivo: %s", buffer);
+	printf("1 \n")
+	char aux2[LENGHT];
+	memset(aux2, 0x0, LENGHT);
+
+	for(int i = 0; i < (strlen(buffer) - 1); i++)
+		aux2[i] = buffer[i];
+	
+	FILE *fp = fopen((const char*) aux2, "r");
+	printf("2 \n");
+	memset(buffer, 0x0, LENGHT);
+	while(fread(aux, LENGHT, 1, fp) > 0){ 
+		send(Client, aux, LENGHT, 0);
 		printf("3");
 	};
-
 
 	printf("Conexão encerrada\n");
 	fclose(fp);
