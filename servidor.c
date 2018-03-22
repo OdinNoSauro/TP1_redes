@@ -17,10 +17,10 @@ int tamanho = sizeof(cliente);
 int main (int argc, char *argv[]){
 		
 	int PORTA = atoi(argv[1]); // porta da conexão
-	int LENGHT = atoi(argv[2]); // tamanho do buffer 
-	//printf("%d\n%d\n",PORTA,LENGHT);
-	char buffer [LENGHT];
-	void *aux = malloc(LENGHT*sizeof(char));
+	int LENGTH = atoi(argv[2]); // tamanho do buffer 
+	//printf("%d\n%d\n",PORTA,LENGTH);
+	char buffer [LENGTH];
+	void *aux = malloc(LENGTH*sizeof(char));
 	int socket_des; // descritor do socket
 	socket_des = socket (AF_INET, SOCK_STREAM, 0);
 	if (socket_des == -1){	
@@ -38,7 +38,7 @@ int main (int argc, char *argv[]){
 		exit(1);
 	} 
 	
-	listen (socket_des,1); // Aguarda pelo clinte, Apenas 1 conexão
+	listen (socket_des,1); // Aguarda pelo cliente, Apenas 1 conexão
 	
 	int Client 	= accept(socket_des, (struct sockaddr*)&cliente, &tamanho);
 	if (Client == -1){
@@ -51,21 +51,21 @@ int main (int argc, char *argv[]){
 
 	send(Client, buffer, strlen(buffer), 0);
 	printf("Aguardando resposta \n");
-	memset(buffer, 0x0, LENGHT);			
-	while((slen = recv(Client, buffer, LENGHT, 0)) < 0);
+	memset(buffer, 0x0, LENGTH);			
+	while((slen = recv(Client, buffer, LENGTH, 0)) < 0);
 	printf("Nome do arquivo: %s", buffer);
 	printf("1 \n")
-	char aux2[LENGHT];
-	memset(aux2, 0x0, LENGHT);
+	char aux2[LENGTH];
+	memset(aux2, 0x0, LENGTH);
 
 	for(int i = 0; i < (strlen(buffer) - 1); i++)
 		aux2[i] = buffer[i];
-	
+
 	FILE *fp = fopen((const char*) aux2, "r");
 	printf("2 \n");
-	memset(buffer, 0x0, LENGHT);
-	while(fread(aux, LENGHT, 1, fp) > 0){ 
-		send(Client, aux, LENGHT, 0);
+	memset(buffer, 0x0, LENGTH);
+	while(fread(aux, LENGTH, 1, fp) > 0){ 
+		send(Client, aux, LENGTH, 0);
 		printf("3");
 	};
 
