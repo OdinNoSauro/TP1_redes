@@ -54,7 +54,7 @@ int main (int argc, char *argv[]){
 	memset(buffer, 0x0, LENGTH);			
 	while((slen = recv(Client, buffer, LENGTH, 0)) < 0);
 	printf("Nome do arquivo: %s", buffer);
-	printf("1 \n")
+	printf("1 \n");
 	char aux2[LENGTH];
 	memset(aux2, 0x0, LENGTH);
 
