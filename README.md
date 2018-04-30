@@ -1,3 +1,6 @@
+Para executar:
+
+
 Links úteis:
 
 http://www.ic.unicamp.br/~juliana/cursos/mc833/
