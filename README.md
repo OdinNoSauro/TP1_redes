@@ -1,4 +1,12 @@
 Para executar:
+gcc -c nome.c
+gcc -o nome nome.c
+
+Servidor:
+./nome "porta" "buffer"
+
+Cliente:
+./nome "host_servidor" "porta" "nome_arquivo" "buffer"
 
 
 Links úteis:
